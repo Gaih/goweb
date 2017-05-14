@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>Dashboard Template for Bootstrap</title>
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+                <a class="navbar-brand" href="#">芭乐科技后台</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a type="button" href="#" class="btn">查看用户</a></li>
+
+                    <li><a type="button" href="../bg/add.html" class="btn">添加数据</a></li>
+                    <li>
+
+                        <a type="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                            style="color:white;">当前用户：蔚蓝少女</a>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="#">修改密码</a></li>
+                            <li><a href="#">退出登录</a></li>
+                            <!--<li><a href="#">Something else here</a></li>-->
+                            <!--<li role="separator" class="divider"></li>-->
+                            <!--<li><a href="#">Separated link</a></li>-->
+                        </ul>
+
+
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 main">
+                <form class="navbar-form navbar-right">
+                    <!--<input type="text" class="form-control" placeholder="查找">-->
+                    <input type="date" class="form-control">
+                    <label style="color:black;">至</label>
+                    <input type="date" class="form-control">
+                    <button type="button" class="btn btn-default">查找</button>
+                </form>
+                <div class="page-header">
+
+                    <label style="font-size:20px; color:black;">选择应用：</label>
+
+                    <div class="btn-group">
+                        <select class="form-control">
+                            <option>蔚蓝少女</option>
+                            <option>疯狂捕鱼</option>
+                            <option>斗地主</option>
+                            <option>王者荣耀</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <div class="table-responsive">
+                    <!-- Single button -->
+
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>日期</th>
+                                <th>产品名称</th>
+                                <th>新增用户</th>
+                                <th>累计用户</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1,001</td>
+                                <td>Lorem</td>
+                                <td>ipsum</td>
+                                <td>dolor</td>
+                            </tr>
+                            <tr>
+                                <td>1,002</td>
+                                <td>amet</td>
+                                <td>consectetur</td>
+                                <td>adipiscing</td>
+                            </tr>
+                            <tr>
+                                <td>1,003</td>
+                                <td>Integer</td>
+                                <td>nec</td>
+                                <td>odio</td>
+                            </tr>
+                            <tr>
+                                <td>1,003</td>
+                                <td>libero</td>
+                                <td>Sed</td>
+                                <td>cursus</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+    </script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>

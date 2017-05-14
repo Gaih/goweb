@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>Dashboard Template for Bootstrap</title>
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+                <a class="navbar-brand" href="#">芭乐科技后台</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li> <a style="color:white;">当前用户：蔚蓝少女</a></li>
+                    <li><a href="#">退出登录</a></li>
+                    <!--<li><a href="#">Profile</a></li>
+          <li><a href="#">Help</a></li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 main">
+
+                <div class="page-header">
+
+
+
+                    <!--<a type="button" href="../bg/add.html" class="btn btn-danger">添加数据</a>-->
+
+                </div>
+
+                <div>
+                    <form class="form-inline">
+                        <label>选择应用：</label>
+
+                        <select class="form-control">
+                            <option>蔚蓝少女</option>
+                            <option>疯狂捕鱼</option>
+                            <option>斗地主</option>
+                            <option>王者荣耀</option>
+                        </select>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">日期</label>
+                            <input type="date" class="form-control" id="exampleInputEmail3">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">新增用户</label>
+                            <input type="number" class="form-control" id="exampleInputEmail3" placeholder="number">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword3">累计用户</label>
+                            <input type="number" class="form-control" id="exampleInputPassword3" placeholder="number">
+                        </div>
+                        <button type="submit" class="btn btn-danger">添加数据</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>
