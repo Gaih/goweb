@@ -59,15 +59,13 @@ body {
 <body>
 
 <div class="container">
-      <form action="/main/" method="POST" class="form-signin">
+      <form action="/login/" method="POST" class="form-signin">
         <h2 class="form-signin-heading">芭乐科技后台</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
         <input type="text" name="inputEmail" class="form-control" placeholder="请输入用户名" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" name="inputPassword" class="form-control" placeholder="请输入密码" required>
         <div class="checkbox">
           <label>
-            <input type="checkbox" value="remember-me"> 记住我
+            <input type="checkbox" name="check" value="remember-me"> 记住我
           </label>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
