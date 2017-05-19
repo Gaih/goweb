@@ -197,7 +197,7 @@ func mainHandler(writer http.ResponseWriter, request *http.Request) {
 			defer db.Close()
 			// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
 			//查询数据
-			res, err := db.Prepare("SELECT * FROM userdata where uid=?")
+			res, err := db.Prepare("SELECT date,name,new_num,tol_num FROM userdata where uid=?")
 
 			query, err := res.Query(uid)
 			checkErr(err)
@@ -225,18 +225,21 @@ func mainHandler(writer http.ResponseWriter, request *http.Request) {
 				results[i] = row //装入结果集中
 				i++
 			}
-			for k, v := range results { //查询出来的数组
-				fmt.Println(k, v)
-			}
-
-			//for rows.Next() {
-			//	err = rows.Scan(&GameData.id, &gamename, &new_num, &tol_num, &gameid, &date)
-			//	log.Println("id:", id, "gamename:", gamename, "gameid:", gameid, "num:", new_num, tol_num, "time:", date)
-			//	checkErr(err)
+			//m := 0
+			//for _, v := range results { //查询出来的数组
+			//	//log.Println(k, v)
+			//	str, err := json.Marshal(v)
+			//	if err == nil {
+			//		log.Println(string(str))
+			//	}
+			//	jsonres[m] = string(str)
+			//	m++
 			//}
+			log.Println(results)
+
 			value, ok := ct.(string)
 			if ok {
-				p := &GameData{Gamename:value, Data: results}
+				p := &GameData{Gamename: value, Data: results}
 				log.Println("r:", request.URL.Path, "当前用户：", ct)
 				er := templates.ExecuteTemplate(writer, "main.html", p)
 				if er != nil {
@@ -259,6 +262,12 @@ type GameData struct {
 	Gamename string
 	Data     map[int]map[string]string
 }
+//type Data struct {
+//	name string
+//	Date string
+//	new_num int
+//	tol_num int
+//}
 
 func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
