@@ -12,11 +12,12 @@ import (
 	"regexp"
 
 	"fmt"
-	"time"
 
 	"github.com/astaxie/session"
 	_ "github.com/astaxie/session/providers/memory"
 	_ "github.com/go-sql-driver/mysql"
+	"io"
+	"encoding/json"
 )
 
 var (
@@ -86,6 +87,7 @@ func main() {
 	http.HandleFunc("/login/", loginHandler)
 	http.HandleFunc("/main/", mainHandler)
 	http.HandleFunc("/logout/", logoutHandler)
+	http.HandleFunc("/postmain/", postHandler)
 
 	if *addr {
 		l, err := net.Listen("tcp", "127.0.0.1:0")
@@ -102,6 +104,7 @@ func main() {
 	}
 	http.ListenAndServe(":8080", nil)
 }
+
 func logoutHandler(writer http.ResponseWriter, request *http.Request) {
 	globalSessions.SessionDestroy(writer, request)
 	http.Redirect(writer, request, "/login/", http.StatusFound)
@@ -168,16 +171,84 @@ func loginHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 
 }
+func postHandler(writer http.ResponseWriter, request *http.Request) {
+	sess := globalSessions.SessionStart(writer, request)
+	ct := sess.Get("username")
+
+	name := request.FormValue("name")
+
+	uid := sess.Get("id")
+	db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+	defer db.Close()
+	// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
+	//查询数据
+	res, err := db.Prepare("SELECT date,name,new_num,tol_num FROM userdata where uid=? AND name=?")
+
+	query, err := res.Query(uid, name )
+	checkErr(err)
+
+	column, _ := query.Columns()              //读出查询出的列字段名
+	values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
+	scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
+	for i := range values {
+		//让每一行数据都填充到[][]byte里面
+		scans[i] = &values[i]
+	}
+	results := make(map[int]map[string]string) //最后得到的map
+	i := 0
+	for query.Next() { //循环，让游标往下移动
+		if err := query.Scan(scans...); err != nil { //query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
+			fmt.Println(err)
+			return
+		}
+		row := make(map[string]string) //每行数据
+		for k, v := range values {     //每行数据是放在values里面，现在把它挪到row里
+			// log.Println("value:", string(v))
+			key := column[k]
+			row[key] = string(v)
+		}
+		results[i] = row //装入结果集中
+		i++
+	}
+	//m := 0
+	//for _, v := range results { //查询出来的数组
+	//	//log.Println(k, v)
+	//	str, err := json.Marshal(v)
+	//	if err == nil {
+	//		log.Println(string(str))
+	//	}
+	//	jsonres[m] = string(str)
+	//	m++
+	//}
+	log.Println(results)
+
+	value, ok := ct.(string)
+	if ok {
+		p := &GameData{Gamename: value, Data: results}
+		log.Println("r:", request.URL.Path, "当前用户：", ct, "p:", p)
+		b,err :=json.Marshal(p)
+		if err == nil {
+			io.WriteString(writer, string(b))
+		}
+		//er := templates.ExecuteTemplate(writer, "main.html", p)
+		//if er != nil {
+		//	log.Println(er)
+		//	http.Error(writer, er.Error(), http.StatusInternalServerError)
+		//}
+	}
+	return
+
+}
 func mainHandler(writer http.ResponseWriter, request *http.Request) {
 	sess := globalSessions.SessionStart(writer, request)
 	ct := sess.Get("username")
-	createtime := sess.Get("createtime")
-	if createtime == nil {
-		sess.Set("createtime", time.Now().Unix())
-	} else if (createtime.(int64) + 60*60*24) < (time.Now().Unix()) {
-		globalSessions.SessionDestroy(writer, request)
-		sess = globalSessions.SessionStart(writer, request)
-	}
+	// createtime := sess.Get("createtime")
+	// if createtime == nil {
+	// 	sess.Set("createtime", time.Now().Unix())
+	// } else if (createtime.(int64) + 60*60*24) < (time.Now().Unix()) {
+	// 	globalSessions.SessionDestroy(writer, request)
+	// 	sess = globalSessions.SessionStart(writer, request)
+	// }
 	log.Println("URL", request.URL.Path, "SessionID:", sess.SessionID(), "username:", ct)
 	if request.URL.Path == "/main/" {
 		if ct != nil {
@@ -197,9 +268,9 @@ func mainHandler(writer http.ResponseWriter, request *http.Request) {
 			defer db.Close()
 			// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
 			//查询数据
-			res, err := db.Prepare("SELECT date,name,new_num,tol_num FROM userdata where uid=?")
+			res, err := db.Prepare("SELECT date,name,new_num,tol_num FROM userdata where uid=? AND name=?")
 
-			query, err := res.Query(uid)
+			query, err := res.Query(uid, "蔚蓝少女")
 			checkErr(err)
 
 			column, _ := query.Columns()              //读出查询出的列字段名
@@ -217,7 +288,7 @@ func mainHandler(writer http.ResponseWriter, request *http.Request) {
 					return
 				}
 				row := make(map[string]string) //每行数据
-				for k, v := range values { //每行数据是放在values里面，现在把它挪到row里
+				for k, v := range values {     //每行数据是放在values里面，现在把它挪到row里
 					// log.Println("value:", string(v))
 					key := column[k]
 					row[key] = string(v)
@@ -240,9 +311,10 @@ func mainHandler(writer http.ResponseWriter, request *http.Request) {
 			value, ok := ct.(string)
 			if ok {
 				p := &GameData{Gamename: value, Data: results}
-				log.Println("r:", request.URL.Path, "当前用户：", ct)
+				log.Println("r:", request.URL.Path, "当前用户：", ct, "p:", p)
 				er := templates.ExecuteTemplate(writer, "main.html", p)
 				if er != nil {
+					log.Println(er)
 					http.Error(writer, er.Error(), http.StatusInternalServerError)
 				}
 			}
@@ -262,6 +334,7 @@ type GameData struct {
 	Gamename string
 	Data     map[int]map[string]string
 }
+
 //type Data struct {
 //	name string
 //	Date string

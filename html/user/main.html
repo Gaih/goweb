@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -177,7 +178,7 @@
                 <label style="font-size:20px; color:black;">选择应用：</label>
 
                 <div class="btn-group">
-                    <select class="form-control">
+                    <select onchange="change(this.value)" class="selectpicker">
                         <option>蔚蓝少女</option>
                         <option>疯狂捕鱼</option>
                         <option>斗地主</option>
@@ -198,15 +199,14 @@
                         <th>累计用户</th>
                     </tr>
                     </thead>
-                    <tbody>
-
-                        {{range $key,$value:=.Data}}
-                        <tr>
-                            {{range $name, $val := $value}}
-                            <td >{{$val}}</td>
-                            {{end}}
-                        </tr>
+                    <tbody id="res">
+                    {{range $key,$value:=.Data}}
+                    <tr>
+                        {{range $name, $val := $value}}
+                        <td>{{$val}}</td>
                         {{end}}
+                    </tr>
+                    {{end}}
                     </tbody>
                 </table>
             </div>
@@ -215,6 +215,58 @@
 </div>
 <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-*.min.js"></script>
+
 </body>
+<script>
+    var postData
+    var data
+    function change(name) {
+        postData = {
+            "name": name
+        };
+        $.ajax({
+            type: "POST",
+            url: "/postmain/",
+            traditional: true,
+            // contentType: "application/json",
+            // data: JSON.stringify(data),
+            data: postData,
+            success: function (msg) {
+//                alert(msg)
+                var m="";
+                data = JSON.parse(msg);
+//                alert(data["Gamename"])
+                for (var k in data["Data"]) {
+                    var res="" ;
+                    console.log(k); //对象中键值对的key
+                    console.log(data["Data"][k]); //对象中键值对的value
+                    for (var i in data["Data"][k]) {
+                        console.log(i); //对象中键值对的key
+                        console.log(data["Data"][k][i]); //对象中键值对的value
+                        res =res+"<td>" + data["Data"][k][i] + "</td>";
+                    }
+                    res ="<tr>"+ res + "</tr>";
+                    m = m+res;
+                    console.log(m)
+                }
+                document.getElementById("res").innerHTML = m;
+            }
+        });
+    }
+
+    $('.selectpicker').selectpicker({
+        style: 'btn-default',
+        size: 4
+    });
+</script>
 
 </html>
