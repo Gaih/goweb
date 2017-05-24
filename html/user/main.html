@@ -167,22 +167,22 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 main">
-            <form class="navbar-form navbar-right">
+            <div    class="navbar-form navbar-right">
                 <!--<input type="text" class="form-control" placeholder="查找">-->
-                <input type="date" class="form-control">
+                <input id="startTime" type="date" class="form-control">
                 <label style="color:black;">至</label>
-                <input type="date" class="form-control">
-                <button type="button" class="btn btn-default">查找</button>
-            </form>
+                <input id="endTime" type="date" class="form-control">
+                <button onclick="search()" class="btn btn-default">查找</button>
+            </div>
             <div class="page-header">
                 <label style="font-size:20px; color:black;">选择应用：</label>
 
                 <div class="btn-group">
-                    <select onchange="change(this.value)" class="selectpicker">
-                        <option>蔚蓝少女</option>
-                        <option>疯狂捕鱼</option>
-                        <option>斗地主</option>
-                        <option>王者荣耀</option>
+                    <select id="select" onchange="change(this.value)" class="selectpicker">
+                        <option value="1">王者荣耀</option>
+                        <option value="3">蔚蓝少女</option>
+                        <option value="2">疯狂捕鱼</option>
+                        <option value="4">斗地主</option>
                     </select>
                 </div>
             </div>
@@ -229,10 +229,54 @@
 <script>
     var postData
     var data
+
+    function search(){
+        var startTime = document.getElementById("startTime").value;
+        var endTime = document.getElementById("endTime").value;
+        var select = document.getElementById("select").value;
+//        alert("start:"+startTime+"end:"+endTime+"select:"+select);
+        postData = {
+            "nameid": select,
+            "start" : startTime,
+            "end" : endTime
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/postmain/",
+            traditional: true,
+            // contentType: "application/json",
+            // data: JSON.stringify(data),
+            data: postData,
+            success: function (msg) {
+//                alert(msg)
+                var m="";
+                data = JSON.parse(msg);
+//                alert(data["Gamename"])
+                for (var k in data["Data"]) {
+                    var res="" ;
+                    console.log(k); //对象中键值对的key
+                    console.log(data["Data"][k]); //对象中键值对的value
+                    for (var i in data["Data"][k]) {
+                        console.log(i); //对象中键值对的key
+                        console.log(data["Data"][k][i]); //对象中键值对的value
+                        res =res+"<td>" + data["Data"][k][i] + "</td>";
+                    }
+                    res ="<tr>"+ res + "</tr>";
+                    m = m+res;
+                    console.log(m)
+                }
+                document.getElementById("res").innerHTML = m;
+            }
+        });
+    }
+
+
     function change(name) {
         postData = {
-            "name": name
+            "nameid": name
         };
+
         $.ajax({
             type: "POST",
             url: "/postmain/",
