@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ede5b0dc-5b5f-4b76-8eee-1f536255b911" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/html/user/password.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gowiki.exe" afterPath="$PROJECT_DIR$/gowiki.exe" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/user/login.html" afterPath="$PROJECT_DIR$/html/user/login.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/html/user/main.html" afterPath="$PROJECT_DIR$/html/user/main.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.go" afterPath="$PROJECT_DIR$/main.go" />
     </list>
@@ -65,19 +67,28 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.go" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.go" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="11">
-              <caret line="233" column="49" lean-forward="true" selection-start-line="233" selection-start-column="49" selection-end-line="233" selection-end-column="49" />
+            <state relative-caret-position="293">
+              <caret line="91" column="36" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
               <folding>
                 <element signature="e#14#281#0" expanded="true" />
-                <marker date="1495611224086" expanded="true" signature="21:25" ph="..." />
-                <marker date="1495611224086" expanded="true" signature="21:140" ph="..." />
-                <marker date="1495611224086" expanded="true" signature="3308:3346" ph="SELECT * FRO... userinfo" />
-                <marker date="1495611224086" expanded="true" signature="4900:4968" ph="select * fro... userdata" />
-                <marker date="1495611224086" expanded="true" signature="6761:6828" ph="SELECT date,... " />
-                <marker date="1495611224086" expanded="true" signature="9185:9252" ph="SELECT date,... " />
+                <element signature="n#!!block;n#loginHandler#0" expanded="false" />
+                <element signature="n#!!block;n#postHandler#0" expanded="false" />
+                <element signature="n#!!block;n#mainHandler#0" expanded="false" />
+                <element signature="n#!!block;n#makeHandler#0" expanded="false" />
+                <element signature="e#11103#11166#0" expanded="false" />
+                <element signature="n#!!block;n#checkErr#0" expanded="false" />
+                <element signature="n#!!block;n#init#0" expanded="false" />
+                <marker date="1495618815890" expanded="true" signature="21:25" ph="..." />
+                <marker date="1495618815890" expanded="true" signature="21:140" ph="..." />
+                <marker date="1495618815890" expanded="true" signature="2041:2082" ph="SELECT passw... userinfo" />
+                <marker date="1495618815890" expanded="true" signature="2278:2320" ph="update useri... " />
+                <marker date="1495618815890" expanded="true" signature="3243:3281" ph="SELECT * FRO... userinfo" />
+                <marker date="1495618815890" expanded="true" signature="4813:4905" ph="select date,... " />
+                <marker date="1495618815890" expanded="true" signature="6698:6765" ph="SELECT date,... " />
+                <marker date="1495618815890" expanded="true" signature="9122:9189" ph="SELECT date,... " />
               </folding>
             </state>
           </provider>
@@ -86,8 +97,8 @@
       <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/html/user/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="241" column="10" lean-forward="true" selection-start-line="241" selection-start-column="10" selection-end-line="241" selection-end-column="10" />
+            <state relative-caret-position="21">
+              <caret line="155" column="44" lean-forward="false" selection-start-line="155" selection-start-column="44" selection-end-line="155" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -96,9 +107,21 @@
       <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/html/user/login.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-9">
-              <caret line="61" column="42" lean-forward="false" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="42" />
+            <state relative-caret-position="264">
+              <caret line="17" column="27" lean-forward="false" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="password.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/html/user/password.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="118">
+              <caret line="103" column="11" lean-forward="false" selection-start-line="103" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+              <folding>
+                <element signature="n#style#0;n#label#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -177,6 +200,8 @@
       <find>label</find>
       <find>Get(&quot;id&quot;)</find>
       <find>SessionID:</find>
+      <find>io.Writer</find>
+      <find>border</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -193,11 +218,12 @@
         <option value="$PROJECT_DIR$/src/wiki/wiki.go" />
         <option value="$PROJECT_DIR$/src/main/main.go" />
         <option value="$PROJECT_DIR$/login.html" />
-        <option value="$PROJECT_DIR$/html/user/login.html" />
         <option value="$PROJECT_DIR$/html/user/test.html" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/3eeb7c7f-b4e4-4ede-b8ed-07a7aafe8a40/console.sql" />
-        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/html/user/main.html" />
+        <option value="$PROJECT_DIR$/html/user/login.html" />
+        <option value="$PROJECT_DIR$/main.go" />
+        <option value="$PROJECT_DIR$/html/user/password.html" />
       </list>
     </option>
   </component>
@@ -231,7 +257,52 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gowiki" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gowiki" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gowiki" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gowiki" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="html" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gowiki" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gowiki" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="html" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="user" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
@@ -245,16 +316,17 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\go\place\src\gowiki\html" />
-      <recent name="D:\go\place\src\gowiki" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\go\place\src\gowiki" />
       <recent name="D:\go\place\src\gowiki\css" />
       <recent name="D:\go\place\src\gowiki\html\bg" />
       <recent name="D:\go\place\src\gowiki\html\user" />
       <recent name="D:\go\place\src\gowiki\html" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\go\place\src\gowiki\html\user" />
+      <recent name="D:\go\place\src\gowiki\html" />
+      <recent name="D:\go\place\src\gowiki" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -350,45 +422,25 @@
     <frame x="1420" y="-8" width="1320" height="784" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21269841" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16349207" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19444445" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32786885" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276923" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3276923" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3672131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2704309" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34461537" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34461537" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
-    <layout-to-restore>
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32923076" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3672131" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3295082" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34461537" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21269841" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19444445" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32786885" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -419,16 +471,16 @@
     <MESSAGE value="设置cookies和session" />
     <MESSAGE value="获取数据库数据并展示在html" />
     <MESSAGE value="select控件点击查找功能完成，下一步按照时间查找" />
-    <option name="LAST_COMMIT_MESSAGE" value="select控件点击查找功能完成，下一步按照时间查找" />
+    <MESSAGE value="根据日期查找功能完成，下一步修改密码" />
+    <option name="LAST_COMMIT_MESSAGE" value="根据日期查找功能完成，下一步修改密码" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="2" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/html/user/test.html" />
     <entry file="file://$PROJECT_DIR$/src/wiki/wiki.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -445,12 +497,21 @@
           <caret line="12" column="16" lean-forward="false" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
           <folding>
             <element signature="e#14#281#0" expanded="true" />
-            <marker date="1495611224086" expanded="true" signature="21:25" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="21:140" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="3308:3346" ph="SELECT * FRO... userinfo" />
-            <marker date="1495611224086" expanded="true" signature="4900:4968" ph="select * fro... userdata" />
-            <marker date="1495611224086" expanded="true" signature="6761:6828" ph="SELECT date,... " />
-            <marker date="1495611224086" expanded="true" signature="9185:9252" ph="SELECT date,... " />
+            <element signature="n#!!block;n#loginHandler#0" expanded="false" />
+            <element signature="n#!!block;n#postHandler#0" expanded="false" />
+            <element signature="n#!!block;n#mainHandler#0" expanded="false" />
+            <element signature="n#!!block;n#makeHandler#0" expanded="false" />
+            <element signature="e#11103#11166#0" expanded="false" />
+            <element signature="n#!!block;n#checkErr#0" expanded="false" />
+            <element signature="n#!!block;n#init#0" expanded="false" />
+            <marker date="1495618815890" expanded="true" signature="21:25" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="21:140" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="2041:2082" ph="SELECT passw... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="2278:2320" ph="update useri... " />
+            <marker date="1495618815890" expanded="true" signature="3243:3281" ph="SELECT * FRO... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="4813:4905" ph="select date,... " />
+            <marker date="1495618815890" expanded="true" signature="6698:6765" ph="SELECT date,... " />
+            <marker date="1495618815890" expanded="true" signature="9122:9189" ph="SELECT date,... " />
           </folding>
         </state>
       </provider>
@@ -503,12 +564,21 @@
           <caret line="10" column="16" lean-forward="false" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
           <folding>
             <element signature="e#14#281#0" expanded="true" />
-            <marker date="1495611224086" expanded="true" signature="21:25" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="21:140" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="3308:3346" ph="SELECT * FRO... userinfo" />
-            <marker date="1495611224086" expanded="true" signature="4900:4968" ph="select * fro... userdata" />
-            <marker date="1495611224086" expanded="true" signature="6761:6828" ph="SELECT date,... " />
-            <marker date="1495611224086" expanded="true" signature="9185:9252" ph="SELECT date,... " />
+            <element signature="n#!!block;n#loginHandler#0" expanded="false" />
+            <element signature="n#!!block;n#postHandler#0" expanded="false" />
+            <element signature="n#!!block;n#mainHandler#0" expanded="false" />
+            <element signature="n#!!block;n#makeHandler#0" expanded="false" />
+            <element signature="e#11103#11166#0" expanded="false" />
+            <element signature="n#!!block;n#checkErr#0" expanded="false" />
+            <element signature="n#!!block;n#init#0" expanded="false" />
+            <marker date="1495618815890" expanded="true" signature="21:25" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="21:140" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="2041:2082" ph="SELECT passw... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="2278:2320" ph="update useri... " />
+            <marker date="1495618815890" expanded="true" signature="3243:3281" ph="SELECT * FRO... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="4813:4905" ph="select date,... " />
+            <marker date="1495618815890" expanded="true" signature="6698:6765" ph="SELECT date,... " />
+            <marker date="1495618815890" expanded="true" signature="9122:9189" ph="SELECT date,... " />
           </folding>
         </state>
       </provider>
@@ -549,12 +619,21 @@
           <caret line="10" column="16" lean-forward="true" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
           <folding>
             <element signature="e#14#281#0" expanded="true" />
-            <marker date="1495611224086" expanded="true" signature="21:25" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="21:140" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="3308:3346" ph="SELECT * FRO... userinfo" />
-            <marker date="1495611224086" expanded="true" signature="4900:4968" ph="select * fro... userdata" />
-            <marker date="1495611224086" expanded="true" signature="6761:6828" ph="SELECT date,... " />
-            <marker date="1495611224086" expanded="true" signature="9185:9252" ph="SELECT date,... " />
+            <element signature="n#!!block;n#loginHandler#0" expanded="false" />
+            <element signature="n#!!block;n#postHandler#0" expanded="false" />
+            <element signature="n#!!block;n#mainHandler#0" expanded="false" />
+            <element signature="n#!!block;n#makeHandler#0" expanded="false" />
+            <element signature="e#11103#11166#0" expanded="false" />
+            <element signature="n#!!block;n#checkErr#0" expanded="false" />
+            <element signature="n#!!block;n#init#0" expanded="false" />
+            <marker date="1495618815890" expanded="true" signature="21:25" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="21:140" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="2041:2082" ph="SELECT passw... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="2278:2320" ph="update useri... " />
+            <marker date="1495618815890" expanded="true" signature="3243:3281" ph="SELECT * FRO... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="4813:4905" ph="select date,... " />
+            <marker date="1495618815890" expanded="true" signature="6698:6765" ph="SELECT date,... " />
+            <marker date="1495618815890" expanded="true" signature="9122:9189" ph="SELECT date,... " />
           </folding>
         </state>
       </provider>
@@ -575,12 +654,21 @@
           <caret line="41" column="37" lean-forward="false" selection-start-line="41" selection-start-column="37" selection-end-line="41" selection-end-column="37" />
           <folding>
             <element signature="e#14#281#0" expanded="true" />
-            <marker date="1495611224086" expanded="true" signature="21:25" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="21:140" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="3308:3346" ph="SELECT * FRO... userinfo" />
-            <marker date="1495611224086" expanded="true" signature="4900:4968" ph="select * fro... userdata" />
-            <marker date="1495611224086" expanded="true" signature="6761:6828" ph="SELECT date,... " />
-            <marker date="1495611224086" expanded="true" signature="9185:9252" ph="SELECT date,... " />
+            <element signature="n#!!block;n#loginHandler#0" expanded="false" />
+            <element signature="n#!!block;n#postHandler#0" expanded="false" />
+            <element signature="n#!!block;n#mainHandler#0" expanded="false" />
+            <element signature="n#!!block;n#makeHandler#0" expanded="false" />
+            <element signature="e#11103#11166#0" expanded="false" />
+            <element signature="n#!!block;n#checkErr#0" expanded="false" />
+            <element signature="n#!!block;n#init#0" expanded="false" />
+            <marker date="1495618815890" expanded="true" signature="21:25" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="21:140" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="2041:2082" ph="SELECT passw... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="2278:2320" ph="update useri... " />
+            <marker date="1495618815890" expanded="true" signature="3243:3281" ph="SELECT * FRO... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="4813:4905" ph="select date,... " />
+            <marker date="1495618815890" expanded="true" signature="6698:6765" ph="SELECT date,... " />
+            <marker date="1495618815890" expanded="true" signature="9122:9189" ph="SELECT date,... " />
           </folding>
         </state>
       </provider>
@@ -803,14 +891,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/html/user/login.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-9">
-          <caret line="61" column="42" lean-forward="false" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Go/src/net/http/request.go">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -821,24 +901,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/html/user/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="241" column="10" lean-forward="true" selection-start-line="241" selection-start-column="10" selection-end-line="241" selection-end-column="10" />
+        <state relative-caret-position="21">
+          <caret line="155" column="44" lean-forward="false" selection-start-line="155" selection-start-column="44" selection-end-line="155" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/html/user/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="264">
+          <caret line="17" column="27" lean-forward="false" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="11">
-          <caret line="233" column="49" lean-forward="true" selection-start-line="233" selection-start-column="49" selection-end-line="233" selection-end-column="49" />
+        <state relative-caret-position="293">
+          <caret line="91" column="36" lean-forward="false" selection-start-line="91" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
           <folding>
             <element signature="e#14#281#0" expanded="true" />
-            <marker date="1495611224086" expanded="true" signature="21:25" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="21:140" ph="..." />
-            <marker date="1495611224086" expanded="true" signature="3308:3346" ph="SELECT * FRO... userinfo" />
-            <marker date="1495611224086" expanded="true" signature="4900:4968" ph="select * fro... userdata" />
-            <marker date="1495611224086" expanded="true" signature="6761:6828" ph="SELECT date,... " />
-            <marker date="1495611224086" expanded="true" signature="9185:9252" ph="SELECT date,... " />
+            <element signature="n#!!block;n#loginHandler#0" expanded="false" />
+            <element signature="n#!!block;n#postHandler#0" expanded="false" />
+            <element signature="n#!!block;n#mainHandler#0" expanded="false" />
+            <element signature="n#!!block;n#makeHandler#0" expanded="false" />
+            <element signature="e#11103#11166#0" expanded="false" />
+            <element signature="n#!!block;n#checkErr#0" expanded="false" />
+            <element signature="n#!!block;n#init#0" expanded="false" />
+            <marker date="1495618815890" expanded="true" signature="21:25" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="21:140" ph="..." />
+            <marker date="1495618815890" expanded="true" signature="2041:2082" ph="SELECT passw... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="2278:2320" ph="update useri... " />
+            <marker date="1495618815890" expanded="true" signature="3243:3281" ph="SELECT * FRO... userinfo" />
+            <marker date="1495618815890" expanded="true" signature="4813:4905" ph="select date,... " />
+            <marker date="1495618815890" expanded="true" signature="6698:6765" ph="SELECT date,... " />
+            <marker date="1495618815890" expanded="true" signature="9122:9189" ph="SELECT date,... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/html/user/password.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="118">
+          <caret line="103" column="11" lean-forward="false" selection-start-line="103" selection-start-column="0" selection-end-line="104" selection-end-column="0" />
+          <folding>
+            <element signature="n#style#0;n#label#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

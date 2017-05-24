@@ -22,65 +22,12 @@ import (
 )
 
 var (
-	templates = template.Must(template.ParseFiles("html/user/login.html", "html/user/main.html"))
+	templates = template.Must(template.ParseFiles("html/user/login.html","html/user/password.html","html/user/main.html"))
 	validPath = regexp.MustCompile("^/(edit|save|view|login|main)/([a-zA-Z0-9]+)$")
 	addr      = flag.Bool("addr", false, "find open address and print to final-port.txt")
 )
 
 func main() {
-
-	// db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
-	// //插入数据
-	// defer db.Close()
-	// stmt, err := db.Prepare("INSERT userdata SET uid=?,name=?,new_num=?,tol_num=?,id=?,date=?")
-	// checkErr(err)
-
-	// res, err := stmt.Exec("1", "蔚蓝少女", "12", "34", "1", time.Now().Format("2006-01-02"))
-	// checkErr(err)
-
-	// id, err := res.RowsAffected()
-	// checkErr(err)
-
-	// fmt.Println(id)
-
-	// //查询数据
-	// rows, err := db.Query("SELECT * FROM userdata")
-	// checkErr(err)
-	// for rows.Next() {
-	// 	var uid int
-	// 	var name string
-	// 	var newnum string
-	// 	var tolnum string
-	// 	var id int
-	// 	var date string
-	// 	err = rows.Scan(&uid, &name, &newnum, &tolnum, &id, &date)
-	// 	checkErr(err)
-	// 	fmt.Println(uid)
-	// 	fmt.Println(name)
-	// 	fmt.Println(newnum)
-	// 	fmt.Println(tolnum)
-	// 	fmt.Println(date)
-	// }
-	// //构造scanArgs、values两个数组，scanArgs的每个值指向values相应值的地址
-	// 	columns, _ := rows.Columns()
-	// 	scanArgs := make([]interface{}, len(columns))
-	// 	values := make([]interface{}, len(columns))
-	// 	for i := range values {
-	// 		scanArgs[i] = &values[i]
-	// 	}
-
-	// 	for rows.Next() {
-	// 		//将行数据保存到record字典
-	// 		err = rows.Scan(scanArgs...)
-	// 		record := make(map[string]string)
-	// 		for i, col := range values {
-	// 			if col != nil {
-	// 				record[columns[i]] = string(col.([]byte))
-	// 			}
-	// 		}
-	// 		fmt.Println(record)
-	// 	}
-
 	flag.Parse()
 	http.HandleFunc("/view/", makeHandler(wiki.ViewHandler))
 	http.HandleFunc("/edit/", makeHandler(wiki.EditHandler))
@@ -89,6 +36,7 @@ func main() {
 	http.HandleFunc("/main/", mainHandler)
 	http.HandleFunc("/logout/", logoutHandler)
 	http.HandleFunc("/postmain/", postHandler)
+	http.HandleFunc("/change/", changeHandler)
 
 	if *addr {
 		l, err := net.Listen("tcp", "127.0.0.1:0")
@@ -105,19 +53,54 @@ func main() {
 	}
 	http.ListenAndServe(":8080", nil)
 }
+func changeHandler(writer http.ResponseWriter, request *http.Request) {
+	if request.Method=="GET" {
+		err := templates.ExecuteTemplate(writer, "password.html", nil)
+		log.Println("修改密码")
+		if err != nil {
+			log.Println(err)
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+		}
+	}else if request.Method=="POST" {
+		pass := request.FormValue("password")
+		newPass := request.FormValue("reP")
+		log.Println("password:",pass,"newPassword:",newPass)
+		sess := globalSessions.SessionStart(writer, request)
+		userId := sess.Get("id")
+
+		db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+		defer db.Close()
+		// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
+		//查询数据
+		res, err := db.Prepare("SELECT password FROM userinfo where uid=?")
+
+		rows, err := res.Query(userId)
+		checkErr(err)
+		var password string
+		for rows.Next() {
+			err = rows.Scan(&password)
+			checkErr(err)
+		}
+		if pass == password {
+			stmt, _ := db.Prepare("update userinfo set password=? where uid=?")
+			result, err := stmt.Exec(string(newPass), userId)
+			if err == nil {
+				affect, err := result.RowsAffected()
+				checkErr(err)
+				log.Println("修改成功",affect)
+				io.WriteString(writer, "修改成功")
+				//http.Redirect(writer, request, "/main/", http.StatusFound)
+			}
+		}
+
+	}
+}
 
 func logoutHandler(writer http.ResponseWriter, request *http.Request) {
 	globalSessions.SessionDestroy(writer, request)
 	http.Redirect(writer, request, "/login/", http.StatusFound)
 	return
 }
-
-func checkErr(err error) {
-	if err != nil {
-		log.Println(err)
-	}
-}
-
 func loginHandler(writer http.ResponseWriter, request *http.Request) {
 	//globalSessions.SessionDestroy(writer, request)
 
@@ -161,7 +144,6 @@ func loginHandler(writer http.ResponseWriter, request *http.Request) {
 			return
 		}
 	} else {
-		log.Println("重新登陆")
 		err := templates.ExecuteTemplate(writer, "login.html", nil)
 		log.Println("登陆界面")
 		if err != nil {
@@ -187,7 +169,7 @@ func postHandler(writer http.ResponseWriter, request *http.Request) {
 		defer db.Close()
 		// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
 		//查询数据
-		res, err := db.Prepare("select  * from userdata where date>=? and date<=? AND id=? AND uid=?")
+		res, err := db.Prepare("select  date,name,new_num,tol_num from userdata where date>=? and date<=? AND id=? AND uid=?")
 
 		query, err := res.Query(startTime, endTime, id, uid)
 		checkErr(err)
@@ -384,19 +366,6 @@ func mainHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 
 }
-
-type GameData struct {
-	Gamename string
-	Data     map[int]map[string]string
-}
-
-//type Data struct {
-//	name string
-//	Date string
-//	new_num int
-//	tol_num int
-//}
-
 func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		m := validPath.FindStringSubmatch(r.URL.Path)
@@ -406,6 +375,16 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request, string)) http.Handl
 			return
 		}
 		fn(w, r, m[2])
+	}
+}
+
+type GameData struct {
+	Gamename string
+	Data     map[int]map[string]string
+}
+func checkErr(err error) {
+	if err != nil {
+		log.Println(err)
 	}
 }
 
