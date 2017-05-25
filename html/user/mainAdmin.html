@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>Dashboard Template for Bootstrap</title>
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /*
+ * Base structure
+ */
+        /* Move down content because we have a fixed navbar that is 50px tall */
+
+        body {
+            padding-top: 50px;
+        }
+
+        /*
+ * Global add-ons
+ */
+
+        .sub-header {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        /*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+
+        .navbar-fixed-top {
+            border: 0;
+        }
+
+        /*
+ * Sidebar
+ */
+        /* Hide for mobile, show later */
+
+        .sidebar {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar {
+                position: fixed;
+                top: 51px;
+                bottom: 0;
+                left: 0;
+                z-index: 1000;
+                display: block;
+                padding: 20px;
+                overflow-x: hidden;
+                overflow-y: auto;
+                /* Scrollable contents if viewport is shorter than content. */
+                background-color: #f5f5f5;
+                border-right: 1px solid #eee;
+            }
+        }
+
+        /* Sidebar navigation */
+
+        .nav-sidebar {
+            margin-right: -21px;
+            /* 20px padding + 1px border */
+            margin-bottom: 20px;
+            margin-left: -20px;
+        }
+
+        .nav-sidebar > li > a {
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+
+        .nav-sidebar > .active > a,
+        .nav-sidebar > .active > a:hover,
+        .nav-sidebar > .active > a:focus {
+            color: #fff;
+            background-color: #428bca;
+        }
+
+        /*
+ * Main content
+ */
+
+        .main {
+            padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .main {
+                padding-right: 40px;
+                padding-left: 40px;
+            }
+        }
+
+        .main .page-header {
+            margin-top: 0;
+        }
+
+        /*
+ * Placeholder dashboard ideas
+ */
+
+        .placeholders {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .placeholders h4 {
+            margin-bottom: 0;
+        }
+
+        .placeholder {
+            margin-bottom: 20px;
+        }
+
+        .placeholder img {
+            display: inline-block;
+            border-radius: 50%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">芭乐科技管理员界面</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+
+                    <a type="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="true"
+                       style="color:white;">当前用户：{{.Gamename}}</a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="/change/">修改密码</a></li>
+                        <li><a href="/logout/">退出登录</a></li>
+                    </ul>
+
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 main">
+            <div    class="navbar-form navbar-right">
+                <!--<input type="text" class="form-control" placeholder="查找">-->
+                <input id="startTime" type="date" class="form-control">
+                <label style="color:black;">至</label>
+                <input id="endTime" type="date" class="form-control">
+                <button onclick="search()" class="btn btn-default">查找</button>
+            </div>
+            <div class="page-header">
+                <label style="font-size:20px; color:black;">选择应用：</label>
+
+                <div class="btn-group">
+                    <select id="select" onchange="change(this.value)" class="selectpicker">
+                        <option value="1">王者荣耀</option>
+                        <option value="3">蔚蓝少女</option>
+                        <option value="2">疯狂捕鱼</option>
+                        <option value="4">斗地主</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <!-- Single button style="display: none" -->
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>产品名称</th>
+                        <th>新增用户</th>
+                        <th>累计用户</th>
+                    </tr>
+                    </thead>
+                    <tbody id="res">
+                    {{range $key,$value:=.Data}}
+                    <tr>
+                        {{range $name, $val := $value}}
+                        <td>{{$val}}</td>
+                        {{end}}
+                    </tr>
+                    {{end}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-*.min.js"></script>
+
+</body>
+<script>
+    var postData
+    var data
+
+    function search(){
+        var startTime = document.getElementById("startTime").value;
+        var endTime = document.getElementById("endTime").value;
+        var select = document.getElementById("select").value;
+//        alert("start:"+startTime+"end:"+endTime+"select:"+select);
+        postData = {
+            "nameid": select,
+            "start" : startTime,
+            "end" : endTime
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/postmain/",
+            traditional: true,
+            // contentType: "application/json",
+            // data: JSON.stringify(data),
+            data: postData,
+            success: function (msg) {
+//                alert(msg)
+                var m="";
+                data = JSON.parse(msg);
+//                alert(data["Gamename"])
+                for (var k in data["Data"]) {
+                    var res="" ;
+                    console.log(k); //对象中键值对的key
+                    console.log(data["Data"][k]); //对象中键值对的value
+                    for (var i in data["Data"][k]) {
+                        console.log(i); //对象中键值对的key
+                        console.log(data["Data"][k][i]); //对象中键值对的value
+                        res =res+"<td>" + data["Data"][k][i] + "</td>";
+                    }
+                    res ="<tr>"+ res + "</tr>";
+                    m = m+res;
+                    console.log(m)
+                }
+                document.getElementById("res").innerHTML = m;
+            }
+        });
+    }
+
+
+    function change(name) {
+        postData = {
+            "nameid": name
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "/postmain/",
+            traditional: true,
+            // contentType: "application/json",
+            // data: JSON.stringify(data),
+            data: postData,
+            success: function (msg) {
+//                alert(msg)
+                var m="";
+                data = JSON.parse(msg);
+//                alert(data["Gamename"])
+                for (var k in data["Data"]) {
+                    var res="" ;
+                    console.log(k); //对象中键值对的key
+                    console.log(data["Data"][k]); //对象中键值对的value
+                    for (var i in data["Data"][k]) {
+                        console.log(i); //对象中键值对的key
+                        console.log(data["Data"][k][i]); //对象中键值对的value
+                        res =res+"<td>" + data["Data"][k][i] + "</td>";
+                    }
+                    res ="<tr>"+ res + "</tr>";
+                    m = m+res;
+                    console.log(m)
+                }
+                document.getElementById("res").innerHTML = m;
+            }
+        });
+    }
+
+    $('.selectpicker').selectpicker({
+        style: 'btn-default',
+        size: 4
+    });
+</script>
+
+</html>
