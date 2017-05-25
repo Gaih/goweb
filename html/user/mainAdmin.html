@@ -146,8 +146,10 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li>
+                <li><a type="button" onclick="userinfo()" class="btn">查看用户</a></li>
 
+                <li><a type="button" onclick="showAdd()" class="btn">添加数据</a></li>
+                <li>
                     <a type="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="true"
                        style="color:white;">当前用户：{{.Gamename}}</a>
@@ -155,25 +157,24 @@
                         <li><a href="/change/">修改密码</a></li>
                         <li><a href="/logout/">退出登录</a></li>
                     </ul>
-
-
                 </li>
             </ul>
         </div>
     </div>
 </nav>
 
-<div class="container-fluid">
+<div id="data" class="container-fluid">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 main">
-            <div    class="navbar-form navbar-right">
+
+            <div class="navbar-form navbar-right">
                 <!--<input type="text" class="form-control" placeholder="查找">-->
                 <input id="startTime" type="date" class="form-control">
                 <label style="color:black;">至</label>
                 <input id="endTime" type="date" class="form-control">
                 <button onclick="search()" class="btn btn-default">查找</button>
             </div>
-            <div class="page-header">
+            <div  class="page-header">
                 <label style="font-size:20px; color:black;">选择应用：</label>
 
                 <div class="btn-group">
@@ -186,6 +187,7 @@
                 </div>
             </div>
 
+            <!--展示数据-->
             <div class="table-responsive">
                 <!-- Single button style="display: none" -->
 
@@ -209,6 +211,34 @@
                     </tbody>
                 </table>
             </div>
+
+
+            <!--添加数据-->
+            <div>
+                <form id="addnum" style="display: none" class="form-inline">
+                    <label>选择应用：</label>
+
+                    <select class="form-control">
+                        <option>蔚蓝少女</option>
+                        <option>疯狂捕鱼</option>
+                        <option>斗地主</option>
+                        <option>王者荣耀</option>
+                    </select>
+                    <div class="form-group">
+                        <label for="date">日期</label>
+                        <input type="date" class="form-control" id="date">
+                    </div>
+                    <div class="form-group">
+                        <label for="new_num">新增用户</label>
+                        <input type="number" class="form-control" id="new_num" placeholder="number">
+                    </div>
+                    <div class="form-group">
+                        <label for="tol_num">累计用户</label>
+                        <input type="number" class="form-control" id="tol_num" placeholder="number">
+                    </div>
+                    <button type="submit" class="btn btn-danger">添加数据</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
@@ -226,18 +256,33 @@
 
 </body>
 <script>
-    var postData
-    var data
+    var postData;
+    var data;
 
-    function search(){
+    function userinfo() {
+//        document.getElementById("data").style.display="none";
+        document.getElementById("data").innerHTML = "hello";
+    }
+    
+    function showAdd() {
+        var add = document.getElementById("addnum").style.display;
+//        alert("hello"+add);
+        if (add=="none"){
+            document.getElementById("addnum").style.display="";
+        }else {
+            document.getElementById("addnum").style.display="none";
+        }
+    }
+
+    function search() {
         var startTime = document.getElementById("startTime").value;
         var endTime = document.getElementById("endTime").value;
         var select = document.getElementById("select").value;
 //        alert("start:"+startTime+"end:"+endTime+"select:"+select);
         postData = {
             "nameid": select,
-            "start" : startTime,
-            "end" : endTime
+            "start": startTime,
+            "end": endTime
         };
 
         $.ajax({
@@ -249,20 +294,20 @@
             data: postData,
             success: function (msg) {
 //                alert(msg)
-                var m="";
+                var m = "";
                 data = JSON.parse(msg);
 //                alert(data["Gamename"])
                 for (var k in data["Data"]) {
-                    var res="" ;
+                    var res = "";
                     console.log(k); //对象中键值对的key
                     console.log(data["Data"][k]); //对象中键值对的value
                     for (var i in data["Data"][k]) {
                         console.log(i); //对象中键值对的key
                         console.log(data["Data"][k][i]); //对象中键值对的value
-                        res =res+"<td>" + data["Data"][k][i] + "</td>";
+                        res = res + "<td>" + data["Data"][k][i] + "</td>";
                     }
-                    res ="<tr>"+ res + "</tr>";
-                    m = m+res;
+                    res = "<tr>" + res + "</tr>";
+                    m = m + res;
                     console.log(m)
                 }
                 document.getElementById("res").innerHTML = m;
@@ -285,20 +330,20 @@
             data: postData,
             success: function (msg) {
 //                alert(msg)
-                var m="";
+                var m = "";
                 data = JSON.parse(msg);
 //                alert(data["Gamename"])
                 for (var k in data["Data"]) {
-                    var res="" ;
+                    var res = "";
                     console.log(k); //对象中键值对的key
                     console.log(data["Data"][k]); //对象中键值对的value
                     for (var i in data["Data"][k]) {
                         console.log(i); //对象中键值对的key
                         console.log(data["Data"][k][i]); //对象中键值对的value
-                        res =res+"<td>" + data["Data"][k][i] + "</td>";
+                        res = res + "<td>" + data["Data"][k][i] + "</td>";
                     }
-                    res ="<tr>"+ res + "</tr>";
-                    m = m+res;
+                    res = "<tr>" + res + "</tr>";
+                    m = m + res;
                     console.log(m)
                 }
                 document.getElementById("res").innerHTML = m;

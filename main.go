@@ -17,7 +17,6 @@ var (
 	validPath = regexp.MustCompile("^/(edit|save|view|login|main)/([a-zA-Z0-9]+)$")
 	addr = flag.Bool("addr", false, "find open address and print to final-port.txt")
 )
-
 func main() {
 	flag.Parse()
 	http.HandleFunc("/view/", makeHandler(wiki.ViewHandler))
