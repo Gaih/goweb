@@ -11,83 +11,64 @@ import (
 	"github.com/astaxie/session"
 )
 
-var templates = template.Must(template.ParseFiles("html/user/mainAdmin.html","html/user/login.html","html/user/password.html","html/user/main.html"))
+var templates = template.Must(template.ParseFiles("html/user/mainAdmin.html", "html/user/login.html", "html/user/password.html", "html/user/main.html"))
 //session管理
 var globalSessions *session.Manager
 
 func AdminHandler(writer http.ResponseWriter, request *http.Request) {
 	sess := globalSessions.SessionStart(writer, request)
 	ct := sess.Get("username")
-	// createtime := sess.Get("createtime")
-	// if createtime == nil {
-	// 	sess.Set("createtime", time.Now().Unix())
-	// } else if (createtime.(int64) + 60*60*24) < (time.Now().Unix()) {
-	// 	globalSessions.SessionDestroy(writer, request)
-	// 	sess = globalSessions.SessionStart(writer, request)
-	// }
 	log.Println("URL:", request.URL.Path, "SessionID:", sess.SessionID(), "username:", ct)
 	if request.URL.Path == "/admin/" {
 		if ct != nil {
-			//m := validPath.FindStringSubmatch(request.URL.Path)
-			//log.Println("m=", m)
-			//if m == nil{
-			//	http.NotFound(writer, request)
-			//	return
-			//}
-			//p := new(Page)
-			//p.Username = username
-			//p.Account = account
-
 			//s数据库查询账户数据
-			uid := sess.Get("id")
-			db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+			//uid := sess.Get("id")
+			db, _ := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
 			defer db.Close()
-			// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
 			//查询数据
-			res, err := db.Prepare("SELECT date,name,new_num,tol_num FROM userdata where uid=? AND id=?")
+			rows, _ := db.Query("SELECT uid,username FROM userinfo ")
 
-			query, err := res.Query(uid, "1")
-			checkErr(err)
+			var results map[int]string
+			results = make(map[int]string)
+			for rows.Next() {
+				var uid int
+				var username string
+				err := rows.Scan(&uid, &username)
+				checkErr(err)
+				//fmt.Println(uid)
+				//fmt.Println(username)
+				results[uid] = username
+			}
 
-			column, _ := query.Columns()              //读出查询出的列字段名
-			values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
-			scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
-			for i := range values {
-				//让每一行数据都填充到[][]byte里面
-				scans[i] = &values[i]
-			}
-			results := make(map[int]map[string]string) //最后得到的map
-			i := 0
-			for query.Next() { //循环，让游标往下移动
-				if err := query.Scan(scans...); err != nil { //query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
-					fmt.Println(err)
-					return
-				}
-				row := make(map[string]string) //每行数据
-				for k, v := range values {     //每行数据是放在values里面，现在把它挪到row里
-					// log.Println("value:", string(v))
-					key := column[k]
-					row[key] = string(v)
-				}
-				results[i] = row //装入结果集中
-				i++
-			}
-			//m := 0
-			//for _, v := range results { //查询出来的数组
-			//	//log.Println(k, v)
-			//	str, err := json.Marshal(v)
-			//	if err == nil {
-			//		log.Println(string(str))
-			//	}
-			//	jsonres[m] = string(str)
-			//	m++
+			//column, _ := res.Columns()              //读出查询出的列字段名
+			//values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
+			//scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
+			//for i := range values {
+			//	//让每一行数据都填充到[][]byte里面
+			//	scans[i] = &values[i]
 			//}
-			log.Println(results)
+			//results := make(map[int]map[string]string) //最后得到的map
+			//i := 0
+			//for res.Next() { //循环，让游标往下移动
+			//	if err := res.Scan(scans...); err != nil { //query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
+			//		fmt.Println(err)
+			//		return
+			//	}
+			//	row := make(map[string]string) //每行数据
+			//	for k, v := range values { //每行数据是放在values里面，现在把它挪到row里
+			//		 log.Println("value:", string(v))
+			//		key := column[k]
+			//		row[key] = string(v)
+			//	}
+			//	results[i] = row //装入结果集中
+			//	i++
+			//}
+			//log.Println(results)
 
 			value, ok := ct.(string)
 			if ok {
-				p := &GameData{Gamename: value, Data: results}
-				log.Println("r:", request.URL.Path, "当前用户：", ct, "p:", p)
+				p := &admin{Username: value, Data: results}
+				log.Println("r:", request.URL.Path, "当前用户：", ct)
 				er := templates.ExecuteTemplate(writer, "mainAdmin.html", p)
 				if er != nil {
 					log.Println(er)
@@ -105,17 +86,17 @@ func AdminHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 }
 func ChangeHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method=="GET" {
+	if request.Method == "GET" {
 		err := templates.ExecuteTemplate(writer, "password.html", nil)
 		log.Println("修改密码")
 		if err != nil {
 			log.Println(err)
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 		}
-	}else if request.Method=="POST" {
+	} else if request.Method == "POST" {
 		pass := request.FormValue("password")
 		newPass := request.FormValue("reP")
-		log.Println("password:",pass,"newPassword:",newPass)
+		log.Println("password:", pass, "newPassword:", newPass)
 		sess := globalSessions.SessionStart(writer, request)
 		userId := sess.Get("id")
 
@@ -138,7 +119,7 @@ func ChangeHandler(writer http.ResponseWriter, request *http.Request) {
 			if err == nil {
 				affect, err := result.RowsAffected()
 				checkErr(err)
-				log.Println("修改成功",affect)
+				log.Println("修改成功", affect)
 				io.WriteString(writer, "修改成功")
 				//http.Redirect(writer, request, "/main/", http.StatusFound)
 			}
@@ -146,7 +127,51 @@ func ChangeHandler(writer http.ResponseWriter, request *http.Request) {
 
 	}
 }
+func UserInfoHandler(writer http.ResponseWriter, request *http.Request) {
 
+	sqline := "select  * from userinfo"
+	results := make(map[int]map[string]string)
+	results = query(sqline)
+
+	//db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+	//defer db.Close()
+	//// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
+	////查询数据
+	//res, err := db.Query("select  * from userinfo ")
+	//
+	//column, _ := res.Columns()                //读出查询出的列字段名
+	//values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
+	//scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
+	//for i := range values {
+	//	//让每一行数据都填充到[][]byte里面
+	//	scans[i] = &values[i]
+	//}
+	//results := make(map[int]map[string]string) //最后得到的map
+	//i := 0
+	//for res.Next() {
+	//	//循环，让游标往下移动
+	//	if err := res.Scan(scans...); err != nil {
+	//		//query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
+	//		fmt.Println(err)
+	//		return
+	//	}
+	//	row := make(map[string]string) //每行数据
+	//	for k, v := range values {
+	//		//每行数据是放在values里面，现在把它挪到row里
+	//		// log.Println("value:", string(v))
+	//		key := column[k]
+	//		row[key] = string(v)
+	//	}
+	//	results[i] = row //装入结果集中
+	//	i++
+	//}
+	//log.Println("r:", request.URL.Path, "results:", results)
+	b, err := json.Marshal(results)
+	if err == nil {
+		io.WriteString(writer, string(b))
+	}
+	return
+}
 func LogoutHandler(writer http.ResponseWriter, request *http.Request) {
 	globalSessions.SessionDestroy(writer, request)
 	http.Redirect(writer, request, "/login/", http.StatusFound)
@@ -189,7 +214,7 @@ func LoginHandler(writer http.ResponseWriter, request *http.Request) {
 				//if ct ==nil {
 				sess.Set("id", id)
 				sess.Set("username", username)
-			}else {
+			} else {
 				http.Redirect(writer, request, "/admin/", http.StatusFound)
 				//ct := sess.Get("username")
 				//if ct ==nil {
@@ -222,52 +247,11 @@ func PostHandler(writer http.ResponseWriter, request *http.Request) {
 	endTime := request.FormValue("end")
 	log.Println("starttime:", startTime, "endtime:", endTime)
 
-	if startTime != ""{
+	if startTime != "" {
 		id := request.FormValue("nameid")
-		uid := sess.Get("id")
-		db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
-		defer db.Close()
-		// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
-		//查询数据
-		res, err := db.Prepare("select  date,name,new_num,tol_num from userdata where date>=? and date<=? AND id=? AND uid=?")
-
-		query, err := res.Query(startTime, endTime, id, uid)
-		checkErr(err)
-
-		column, _ := query.Columns()              //读出查询出的列字段名
-		values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
-		scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
-		for i := range values {
-			//让每一行数据都填充到[][]byte里面
-			scans[i] = &values[i]
-		}
-		results := make(map[int]map[string]string) //最后得到的map
-		i := 0
-		for query.Next() { //循环，让游标往下移动
-			if err := query.Scan(scans...); err != nil { //query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
-				fmt.Println(err)
-				return
-			}
-			row := make(map[string]string) //每行数据
-			for k, v := range values {     //每行数据是放在values里面，现在把它挪到row里
-				// log.Println("value:", string(v))
-				key := column[k]
-				row[key] = string(v)
-			}
-			results[i] = row //装入结果集中
-			i++
-		}
-		//m := 0
-		//for _, v := range results { //查询出来的数组
-		//	//log.Println(k, v)
-		//	str, err := json.Marshal(v)
-		//	if err == nil {
-		//		log.Println(string(str))
-		//	}
-		//	jsonres[m] = string(str)
-		//	m++
-		//}
-		//log.Println("results:", results)
+		//uid := sess.Get("id")
+		results := make(map[int]map[string]string)
+		results=query("select  date,name,new_num,tol_num from userdata where date>=? and date<=? AND gameid=?",startTime, endTime, id)
 
 		value, ok := ct.(string)
 		if ok {
@@ -285,39 +269,8 @@ func PostHandler(writer http.ResponseWriter, request *http.Request) {
 		}
 	} else {
 		id := request.FormValue("nameid")
-		uid := sess.Get("id")
-		db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
-		defer db.Close()
-		// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
-		//查询数据
-		res, err := db.Prepare("SELECT date,name,new_num,tol_num FROM userdata where uid=? AND id=?")
-		query, err := res.Query(uid, id)
-		checkErr(err)
-
-		column, _ := query.Columns()              //读出查询出的列字段名
-		values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
-		scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
-		for i := range values {
-			//让每一行数据都填充到[][]byte里面
-			scans[i] = &values[i]
-		}
-		results := make(map[int]map[string]string) //最后得到的map
-		i := 0
-		for query.Next() { //循环，让游标往下移动
-			if err := query.Scan(scans...); err != nil { //query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
-				fmt.Println(err)
-				return
-			}
-			row := make(map[string]string) //每行数据
-			for k, v := range values {     //每行数据是放在values里面，现在把它挪到row里
-				// log.Println("value:", string(v))
-				key := column[k]
-				row[key] = string(v)
-			}
-			results[i] = row //装入结果集中
-			i++
-		}
-		//log.Println(results)
+		results := make(map[int]map[string]string)
+		results=query("SELECT date,name,new_num,tol_num FROM userdata where gameid=?",id)
 
 		value, ok := ct.(string)
 		if ok {
@@ -349,62 +302,9 @@ func MainHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Println("URL:", request.URL.Path, "SessionID:", sess.SessionID(), "username:", ct)
 	if request.URL.Path == "/main/" {
 		if ct != nil {
-			//m := validPath.FindStringSubmatch(request.URL.Path)
-			//log.Println("m=", m)
-			//if m == nil{
-			//	http.NotFound(writer, request)
-			//	return
-			//}
-			//p := new(Page)
-			//p.Username = username
-			//p.Account = account
-
-			//s数据库查询账户数据
-			uid := sess.Get("id")
-			db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
-			defer db.Close()
-			// fmt.Printf("SELECT password FROM userinfo where account=\"%v\"", email)
-			//查询数据
-			res, err := db.Prepare("SELECT date,name,new_num,tol_num FROM userdata where uid=? AND id=?")
-
-			query, err := res.Query(uid, "1")
-			checkErr(err)
-
-			column, _ := query.Columns()              //读出查询出的列字段名
-			values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
-			scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
-			for i := range values {
-				//让每一行数据都填充到[][]byte里面
-				scans[i] = &values[i]
-			}
-			results := make(map[int]map[string]string) //最后得到的map
-			i := 0
-			for query.Next() { //循环，让游标往下移动
-				if err := query.Scan(scans...); err != nil { //query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
-					fmt.Println(err)
-					return
-				}
-				row := make(map[string]string) //每行数据
-				for k, v := range values {     //每行数据是放在values里面，现在把它挪到row里
-					// log.Println("value:", string(v))
-					key := column[k]
-					row[key] = string(v)
-				}
-				results[i] = row //装入结果集中
-				i++
-			}
-			//m := 0
-			//for _, v := range results { //查询出来的数组
-			//	//log.Println(k, v)
-			//	str, err := json.Marshal(v)
-			//	if err == nil {
-			//		log.Println(string(str))
-			//	}
-			//	jsonres[m] = string(str)
-			//	m++
-			//}
-			log.Println(results)
-
+			sqline := "SELECT date,name,new_num,tol_num FROM userdata"
+			results := make(map[int]map[string]string)
+			results = query(sqline)
 			value, ok := ct.(string)
 			if ok {
 				p := &GameData{Gamename: value, Data: results}
@@ -426,16 +326,122 @@ func MainHandler(writer http.ResponseWriter, request *http.Request) {
 	}
 
 }
+func SelectHandler(writer http.ResponseWriter, request *http.Request) {
+	id := request.FormValue("uid")
+	db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+	defer db.Close()
+	//查询数据
+	res, err := db.Prepare("select gameid,gamename from gameinfo where uid=? ")
+	log.Println("id:", id)
+	query, err := res.Query(id)
+	checkErr(err)
+
+	column, _ := query.Columns()              //读出查询出的列字段名
+	values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
+	scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
+	for i := range values {
+		//让每一行数据都填充到[][]byte里面
+		scans[i] = &values[i]
+	}
+	results := make(map[int]map[string]string) //最后得到的map
+	i := 0
+	for query.Next() {
+		//循环，让游标往下移动
+		if err := query.Scan(scans...); err != nil {
+			//query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
+			fmt.Println(err)
+			return
+		}
+		row := make(map[string]string) //每行数据
+		for k, v := range values {
+			//每行数据是放在values里面，现在把它挪到row里
+			// log.Println("value:", string(v))
+			key := column[k]
+			row[key] = string(v)
+		}
+		results[i] = row //装入结果集中
+		i++
+	}
+
+	b, err := json.Marshal(results)
+	if err == nil {
+		//将map数组传值到HTML中
+		io.WriteString(writer, string(b))
+		log.Println("r:", request.URL.Path, "results:", string(b))
+
+	}
+}
 func checkErr(err error) {
 	if err != nil {
 		log.Println(err)
 	}
 }
+
 type GameData struct {
 	Gamename string
 	Data     map[int]map[string]string
 }
+type admin struct {
+	Username string
+	Data     map[int]string
+}
+
 func init() {
 	globalSessions, _ = session.NewManager("memory", "gosessionid", 3600)
 	go globalSessions.GC()
+}
+func query(sqline ...string) map[int]map[string]string {
+
+	fmt.Println("sqline: ", sqline)
+	i := len(sqline)
+	db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+	checkErr(err)
+	defer db.Close()
+	//查询数据 "SELECT date,name,new_num,tol_num FROM userdata"
+	res, err := db.Prepare(sqline[0])
+	query, err := res.Query()
+
+	if i == 2 {
+		t := string(sqline[1])
+		query, err = res.Query(t)
+		checkErr(err)
+	}else if i == 3 {
+		t1 := string(sqline[1])
+		t2 := string(sqline[2])
+		query, err = res.Query(t1,t2)
+		checkErr(err)
+	}else if i == 4 {
+		t1 := string(sqline[1])
+		t2 := string(sqline[2])
+		t3 := string(sqline[3])
+		query, err = res.Query(t1,t2,t3)
+		checkErr(err)
+	}
+	column, _ := query.Columns()              //读出查询出的列字段名
+	values := make([][]byte, len(column))     //values是每个列的值，这里获取到byte里
+	scans := make([]interface{}, len(column)) //因为每次查询出来的列是不定长的，用len(column)定住当次查询的长度
+	for i := range values {
+		//让每一行数据都填充到[][]byte里面
+		scans[i] = &values[i]
+	}
+	results := make(map[int]map[string]string) //最后得到的map
+	for query.Next() {
+		//循环，让游标往下移动
+		if err := query.Scan(scans...); err != nil {
+			//query.Scan查询出来的不定长值放到scans[i] = &values[i],也就是每行都放在values里
+			fmt.Println(err)
+			return nil
+		}
+		row := make(map[string]string) //每行数据
+		for k, v := range values {
+			//每行数据是放在values里面，现在把它挪到row里
+			// log.Println("value:", string(v))
+			key := column[k]
+			row[key] = string(v)
+		}
+		results[i] = row //装入结果集中
+		i++
+	}
+	log.Println(results)
+	return results
 }

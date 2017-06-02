@@ -142,17 +142,18 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">芭乐科技管理员界面</a>
+            <a class="navbar-brand" href="/admin/">芭乐科技管理员界面</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li><a type="button" href="/admin/" class="btn">查看数据</a></li>
                 <li><a type="button" onclick="userinfo()" class="btn">查看用户</a></li>
 
                 <li><a type="button" onclick="showAdd()" class="btn">添加数据</a></li>
                 <li>
                     <a type="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="true"
-                       style="color:white;">当前用户：{{.Gamename}}</a>
+                       style="color:white;">当前用户：{{.Username}}</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li><a href="/change/">修改密码</a></li>
                         <li><a href="/logout/">退出登录</a></li>
@@ -163,7 +164,7 @@
     </div>
 </nav>
 
-<div id="data" class="container-fluid">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-8 col-sm-offset-2 col-md-10 col-md-offset-1 main">
 
@@ -174,15 +175,22 @@
                 <input id="endTime" type="date" class="form-control">
                 <button onclick="search()" class="btn btn-default">查找</button>
             </div>
-            <div  class="page-header">
-                <label style="font-size:20px; color:black;">选择应用：</label>
 
+            <div class="page-header">
+                <label style="font-size:20px; color:black;">选择应用：</label>
                 <div class="btn-group">
-                    <select id="select" onchange="change(this.value)" class="selectpicker">
-                        <option value="1">王者荣耀</option>
-                        <option value="3">蔚蓝少女</option>
-                        <option value="2">疯狂捕鱼</option>
-                        <option value="4">斗地主</option>
+                    <select id="username" onchange="getgame(this.value)" class="selectpicker">
+                        {{range $key,$value:=.Data}}
+                        <option value="{{$key}}">{{$value}}</option>
+                        {{end}}
+                    </select>
+                </div>
+                <div class="btn-group ">
+                    <select id="selectgame" class="selectpicker"  onchange="change(this.value)" >
+                    <!--<option value="1">王者荣耀</option>-->
+                    <!--<option value="3">蔚蓝少女</option>-->
+                    <!--<option value="2">疯狂捕鱼</option>-->
+                    <!--<option value="4">斗地主</option>-->
                     </select>
                 </div>
             </div>
@@ -191,7 +199,7 @@
             <div class="table-responsive">
                 <!-- Single button style="display: none" -->
 
-                <table class="table table-striped">
+                <table id="data" class="table table-striped">
                     <thead>
                     <tr>
                         <th>日期</th>
@@ -201,13 +209,7 @@
                     </tr>
                     </thead>
                     <tbody id="res">
-                    {{range $key,$value:=.Data}}
-                    <tr>
-                        {{range $name, $val := $value}}
-                        <td>{{$val}}</td>
-                        {{end}}
-                    </tr>
-                    {{end}}
+
                     </tbody>
                 </table>
             </div>
@@ -250,27 +252,51 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
-
-<!-- (Optional) Latest compiled and minified JavaScript translation files -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/i18n/defaults-*.min.js"></script>
-
 </body>
 <script>
     var postData;
     var data;
 
     function userinfo() {
-//        document.getElementById("data").style.display="none";
-        document.getElementById("data").innerHTML = "hello";
+        $.ajax({
+            type: "GET",
+            url: "/userinfo/",
+            traditional: true,
+            // contentType: "application/json",
+            // data: JSON.stringify(data),
+//            data: postData,
+            success: function (msg) {
+//                alert(msg);
+                var n = "<thead> <tr> <th>账号</th> <th>管理员</th> <th>密码</th> <th>用户id</th><th>用户名</th> </tr> </thead> <tbody id=\"res\">";
+                var m = "";
+                data = JSON.parse(msg);
+//                alert(data["Gamename"])
+                for (var k in data) {
+                    var res = "";
+                    console.log(k); //对象中键值对的key
+                    console.log(data[k]); //对象中键值对的value
+                    for (var i in data[k]) {
+                        console.log(i); //对象中键值对的key
+                        console.log(data[k][i]); //对象中键值对的value
+                        res = res + "<td>" + data[k][i] + "</td>";
+                    }
+                    res = "<tr>" + res + "</tr>";
+                    m = m + res;
+                }
+                console.log(n + m);
+
+                document.getElementById("data").innerHTML = n + m + "</body>";
+            }
+        });
     }
-    
+
     function showAdd() {
         var add = document.getElementById("addnum").style.display;
 //        alert("hello"+add);
-        if (add=="none"){
-            document.getElementById("addnum").style.display="";
-        }else {
-            document.getElementById("addnum").style.display="none";
+        if (add == "none") {
+            document.getElementById("addnum").style.display = "";
+        } else {
+            document.getElementById("addnum").style.display = "none";
         }
     }
 
@@ -308,14 +334,43 @@
                     }
                     res = "<tr>" + res + "</tr>";
                     m = m + res;
-                    console.log(m)
                 }
+                console.log(m);
+
                 document.getElementById("res").innerHTML = m;
             }
         });
     }
 
+    function getgame(uid) {
+        alert(uid);
+        postData = {
+            "uid": uid
+        };
+        var m = "";
 
+        $.ajax({
+            type: "POST",
+            url: "/postselect/",
+            traditional: true,
+            // contentType: "application/json",
+            // data: JSON.stringify(data),
+            data: postData,
+            success: function (msg) {
+                alert(msg);
+                data = JSON.parse(msg);
+                for (var k in data) {
+                    console.log(k); //对象中键值对的key
+                    console.log(data[k]); //对象中键值对的value
+                    console.log(data[k]["gamename"]);
+                    m = m + "<option>" + data[k]["gamename"] + "</option>";
+                }
+                console.log(m);
+                document.getElementById("selectgame").innerHTML = "<option>疯狂捕鱼</option>";
+            }
+
+        });
+    }
     function change(name) {
         postData = {
             "nameid": name

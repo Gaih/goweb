@@ -1,20 +1,21 @@
 <component name="libraryTable">
   <library name="GOPATH &lt;gowiki&gt;">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../samples" />
-      <root url="file://$PROJECT_DIR$/../goweb01" />
-      <root url="file://$PROJECT_DIR$/../awesomeProject" />
-      <root url="file://$PROJECT_DIR$/../github.com" />
-      <root url="file://$PROJECT_DIR$/../golang.org" />
       <root url="file://$PROJECT_DIR$/../sourcegraph.com" />
+      <root url="file://$PROJECT_DIR$/../awesomeProject" />
+      <root url="file://$PROJECT_DIR$/../samples" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../goweb01" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/../samples" />
-      <root url="file://$PROJECT_DIR$/../goweb01" />
-      <root url="file://$PROJECT_DIR$/../awesomeProject" />
-      <root url="file://$PROJECT_DIR$/../github.com" />
-      <root url="file://$PROJECT_DIR$/../golang.org" />
       <root url="file://$PROJECT_DIR$/../sourcegraph.com" />
+      <root url="file://$PROJECT_DIR$/../awesomeProject" />
+      <root url="file://$PROJECT_DIR$/../samples" />
+      <root url="file://$PROJECT_DIR$/../golang.org" />
+      <root url="file://$PROJECT_DIR$/../github.com" />
+      <root url="file://$PROJECT_DIR$/../goweb01" />
     </SOURCES>
     <excluded>
       <root url="file://$PROJECT_DIR$" />
