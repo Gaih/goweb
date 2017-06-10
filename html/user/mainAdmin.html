@@ -149,7 +149,7 @@
                 <li><a type="button" href="/admin/" class="btn">查看数据</a></li>
                 <li><a type="button" onclick="userinfo()" class="btn">查看用户</a></li>
 
-                <li><a type="button" onclick="showAdd()" class="btn">添加数据</a></li>
+                <li><a type="button" onclick="showAdd()" class="btn">添加</a></li>
                 <li>
                     <a type="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="true"
@@ -185,14 +185,28 @@
                         {{end}}
                     </select>
                 </div>
-                <div class="btn-group ">
-                    <select id="selectgame" class="selectpicker"  onchange="change(this.value)" >
-                    <!--<option value="1">王者荣耀</option>-->
-                    <!--<option value="3">蔚蓝少女</option>-->
-                    <!--<option value="2">疯狂捕鱼</option>-->
-                    <!--<option value="4">斗地主</option>-->
-                    </select>
+                <!--<div class="btn-group ">-->
+                <!--<select id="selectgame" class="selectpicker"  onchange="change(this.value)" >-->
+                <!--&lt;!&ndash;<option value="1">王者荣耀</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="3">蔚蓝少女</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="2">疯狂捕鱼</option>&ndash;&gt;-->
+                <!--&lt;!&ndash;<option value="4">斗地主</option>&ndash;&gt;-->
+                <!--</select>-->
+                <!--</div>-->
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        游戏 <span class="caret"></span>
+                    </button>
+                    <ul id="selectgame" class="dropdown-menu">
+                        <li><a href="#">demo</a></li>
+                        <li><a href="#">demo</a></li>
+                        <li><a href="#">demo</a></li>
+                        <li><a href="#">demo</a></li>
+                    </ul>
                 </div>
+                <label>gameid</label>
+                <label id="gameid"></label>
             </div>
 
             <!--展示数据-->
@@ -215,30 +229,83 @@
             </div>
 
 
-            <!--添加数据-->
+            <!--添加游戏数据-->
             <div>
-                <form id="addnum" style="display: none" class="form-inline">
-                    <label>选择应用：</label>
+                <form action="/addata/" id="addnum" style="display: none" class="form-inline">
+                    <hr>
+                    <label>选择用户：</label>
 
-                    <select class="form-control">
-                        <option>蔚蓝少女</option>
-                        <option>疯狂捕鱼</option>
-                        <option>斗地主</option>
-                        <option>王者荣耀</option>
+                    <select onchange="add_getgame(this.value)" class="selectpicker">
+                        {{range $key,$value:=.Data}}
+                        <option value="{{$key}}">{{$value}}</option>
+                        {{end}}
                     </select>
+
+                    <div style="padding-left: 20px" class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                            游戏 <span class="caret"></span>
+                        </button>
+                        <ul id="add_selectgame" class="dropdown-menu">
+                            <li><a href="#">demo</a></li>
+                        </ul>
+                    </div>
+                    <label style="padding-left: 20px" >gameid:</label>
+                    <input type="text" readonly="readonly" class="form-control" id="add_gameid" name="add_gameid">
+                    <div style="padding-top: 5px">
+                        <div class="form-group">
+                            <label for="date">日期</label>
+                            <input type="date" class="form-control" id="date" name="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="new_num">新增用户</label>
+                            <input type="number" class="form-control" id="new_num" name="new_num" placeholder="number">
+                        </div>
+                        <div class="form-group">
+                            <label for="tol_num">累计用户</label>
+                            <input type="number" class="form-control" id="tol_num" name="tol_num" placeholder="number">
+                        </div>
+                        <button type="submit" class="btn btn-danger">添加数据</button>
+                    </div>
+                </form>
+            </div>
+            <!--添加用户-->
+            <div>
+                <form id="adduser" action="/addUser/" style="display: none" class="form-inline">
+                    <hr>
                     <div class="form-group">
-                        <label for="date">日期</label>
-                        <input type="date" class="form-control" id="date">
+                        <label for="new_username">用户名</label>
+                        <input type="text" class="form-control" id="new_username" name="new_username">
                     </div>
                     <div class="form-group">
-                        <label for="new_num">新增用户</label>
-                        <input type="number" class="form-control" id="new_num" placeholder="number">
+                        <label for="new_account">账号</label>
+                        <input type="text" class="form-control" name="new_account" id="new_account">
                     </div>
                     <div class="form-group">
-                        <label for="tol_num">累计用户</label>
-                        <input type="number" class="form-control" id="tol_num" placeholder="number">
+                        <label for="new_password">密码</label>
+                        <input type="text" class="form-control" name="new_password" id="new_password">
                     </div>
-                    <button type="submit" class="btn btn-danger">添加数据</button>
+                    <button type="submit" class="btn btn-danger">添加用户</button>
+                </form>
+            </div>
+            <!--添加游戏-->
+            <div>
+                <form id="addgame" action="/addgame/" style="display: none" class="form-inline">
+                    <hr>
+                    <div class="form-group">
+                        <label>选择用户：</label>
+
+                        <select name="select_name" class="selectpicker">
+                            {{range $key,$value:=.Data}}
+                            <option value="{{$key}}">{{$value}}</option>
+                            {{end}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_account">游戏名：</label>
+                        <input type="text" class="form-control" name="new_gamename" id="new_gamename">
+                    </div>
+                    <button type="submit" class="btn btn-danger">添加新游戏</button>
                 </form>
             </div>
         </div>
@@ -291,22 +358,30 @@
     }
 
     function showAdd() {
-        var add = document.getElementById("addnum").style.display;
-//        alert("hello"+add);
-        if (add == "none") {
+        var addnum = document.getElementById("addnum").style.display;
+//        var adduser = document.getElementById("adduser").style.display;
+
+        if (addnum == "none") {
             document.getElementById("addnum").style.display = "";
+            document.getElementById("adduser").style.display = "";
+            document.getElementById("addgame").style.display = "";
+
         } else {
             document.getElementById("addnum").style.display = "none";
+            document.getElementById("adduser").style.display = "none";
+            document.getElementById("addgame").style.display = "none";
+
+
         }
     }
 
     function search() {
         var startTime = document.getElementById("startTime").value;
         var endTime = document.getElementById("endTime").value;
-        var select = document.getElementById("select").value;
-//        alert("start:"+startTime+"end:"+endTime+"select:"+select);
+        var gameid = document.getElementById("gameid").textContent;
+//        alert("start:" + startTime + "end:" + endTime + "gameid:" + gameid);
         postData = {
-            "nameid": select,
+            "nameid": gameid,
             "start": startTime,
             "end": endTime
         };
@@ -343,7 +418,7 @@
     }
 
     function getgame(uid) {
-        alert(uid);
+//        alert(uid);
         postData = {
             "uid": uid
         };
@@ -357,23 +432,61 @@
             // data: JSON.stringify(data),
             data: postData,
             success: function (msg) {
-                alert(msg);
+//                alert(msg);
                 data = JSON.parse(msg);
                 for (var k in data) {
                     console.log(k); //对象中键值对的key
                     console.log(data[k]); //对象中键值对的value
                     console.log(data[k]["gamename"]);
-                    m = m + "<option>" + data[k]["gamename"] + "</option>";
+                    var id = data[k]["gameid"];
+                    m = m + "<li><a href=\"JavaScript:change(" + id + ")\">" + data[k]["gamename"] + "</a></li>";
                 }
                 console.log(m);
-                document.getElementById("selectgame").innerHTML = "<option>疯狂捕鱼</option>";
+                document.getElementById("selectgame").innerHTML = m;
             }
 
         });
     }
-    function change(name) {
+    function add_getgame(uid) {
+//        alert(uid);
         postData = {
-            "nameid": name
+            "uid": uid
+        };
+        var m = "";
+
+        $.ajax({
+            type: "POST",
+            url: "/postselect/",
+            traditional: true,
+            // contentType: "application/json",
+            // data: JSON.stringify(data),
+            data: postData,
+            success: function (msg) {
+//                alert(msg);
+                data = JSON.parse(msg);
+                for (var k in data) {
+                    console.log(k); //对象中键值对的key
+                    console.log(data[k]); //对象中键值对的value
+                    console.log(data[k]["gamename"]);
+                    var id = data[k]["gameid"];
+                    var name = data[k]["gamename"];
+                    m = m + "<li><a href=\"JavaScript:showinfo(" + id + ")\">" + name + "</a></li>";
+                }
+                console.log(m);
+                document.getElementById("add_selectgame").innerHTML = m;
+            }
+
+        });
+    }
+
+    function showinfo(id,name) {
+        document.getElementById("add_gameid").value = id;
+
+    }
+
+    function change(gameid) {
+        postData = {
+            "nameid": gameid
         };
 
         $.ajax({
@@ -402,6 +515,8 @@
                     console.log(m)
                 }
                 document.getElementById("res").innerHTML = m;
+                //todo
+                document.getElementById("gameid").innerText = gameid;
             }
         });
     }

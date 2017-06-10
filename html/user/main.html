@@ -129,7 +129,7 @@
 
 </head>
 
-<body>
+<body onload="load()">
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
@@ -150,7 +150,7 @@
 
                     <a type="button" class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="true"
-                       style="color:white;">当前用户：{{.Gamename}}</a>
+                       style="color:white;">当前用户：{{.Username}}</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li><a href="/change/">修改密码</a></li>
                         <li><a href="/logout/">退出登录</a></li>
@@ -178,10 +178,13 @@
 
                 <div class="btn-group">
                     <select id="select" onchange="change(this.value)" class="selectpicker">
-                        <option value="1">王者荣耀</option>
-                        <option value="3">蔚蓝少女</option>
-                        <option value="2">疯狂捕鱼</option>
-                        <option value="4">斗地主</option>
+                        {{range $key,$value:=.Data}}
+                        <option value="{{$key}}">{{$value}}</option>
+                        {{end}}
+                        <!--<option value="1">王者荣耀</option>-->
+                        <!--<option value="3">蔚蓝少女</option>-->
+                        <!--<option value="2">疯狂捕鱼</option>-->
+                        <!--<option value="4">斗地主</option>-->
                     </select>
                 </div>
             </div>
@@ -199,13 +202,7 @@
                     </tr>
                     </thead>
                     <tbody id="res">
-                    {{range $key,$value:=.Data}}
-                    <tr>
-                        {{range $name, $val := $value}}
-                        <td>{{$val}}</td>
-                        {{end}}
-                    </tr>
-                    {{end}}
+
                     </tbody>
                 </table>
             </div>
@@ -228,7 +225,12 @@
 <script>
     var postData;
     var data;
+    var select = document.getElementById("select").value;
 
+    function load() {
+//        alert(select)
+        change(select)
+    }
     function search(){
         var startTime = document.getElementById("startTime").value;
         var endTime = document.getElementById("endTime").value;

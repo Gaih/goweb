@@ -292,6 +292,7 @@ func PostHandler(writer http.ResponseWriter, request *http.Request) {
 func MainHandler(writer http.ResponseWriter, request *http.Request) {
 	sess := globalSessions.SessionStart(writer, request)
 	ct := sess.Get("username")
+	uid := sess.Get("id")
 	// createtime := sess.Get("createtime")
 	// if createtime == nil {
 	// 	sess.Set("createtime", time.Now().Unix())
@@ -302,13 +303,30 @@ func MainHandler(writer http.ResponseWriter, request *http.Request) {
 	log.Println("URL:", request.URL.Path, "SessionID:", sess.SessionID(), "username:", ct)
 	if request.URL.Path == "/main/" {
 		if ct != nil {
-			sqline := "SELECT date,name,new_num,tol_num FROM userdata"
-			results := make(map[int]map[string]string)
-			results = query(sqline)
+
+			db, _ := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+			defer db.Close()
+			//查询数据
+			rows, _ := db.Prepare("SELECT gameid , gamename  FROM gameinfo WHERE uid = ?")
+			res,err:=rows.Query(uid)
+			checkErr(err)
+			var results map[int]string
+			results = make(map[int]string)
+			for res.Next() {
+				var uid int
+				var username string
+				err := res.Scan(&uid, &username)
+				checkErr(err)
+				//fmt.Println(uid)
+				//fmt.Println(username)
+				results[uid] = username
+			}
+
 			value, ok := ct.(string)
 			if ok {
-				p := &GameData{Gamename: value, Data: results}
-				log.Println("r:", request.URL.Path, "当前用户：", ct, "p:", p)
+				p := &admin{Username: value, Data: results}
+				log.Println("r:", request.URL.Path, "当前用户：", ct)
+				log.Println(results)
 				er := templates.ExecuteTemplate(writer, "main.html", p)
 				if er != nil {
 					log.Println(er)
@@ -316,6 +334,22 @@ func MainHandler(writer http.ResponseWriter, request *http.Request) {
 				}
 			}
 			return
+
+
+			//results := make(map[int]map[string]string)
+			//results = query("SELECT gameid , gamename  FROM gameinfo WHERE uid = ?",uid)
+			////results = query("SELECT date,name,new_num,tol_num FROM userdata")
+			//value, ok := ct.(string)
+			//if ok {
+			//	p := &GameData{Gamename: value, Data: results}
+			//	log.Println("r:", request.URL.Path, "当前用户：", ct, "p:", p)
+			//	er := templates.ExecuteTemplate(writer, "main.html", p)
+			//	if er != nil {
+			//		log.Println(er)
+			//		http.Error(writer, er.Error(), http.StatusInternalServerError)
+			//	}
+			//}
+			//return
 		} else {
 			http.Redirect(writer, request, "/login/", http.StatusFound)
 			return
@@ -371,12 +405,106 @@ func SelectHandler(writer http.ResponseWriter, request *http.Request) {
 
 	}
 }
+func AddGameDataHandler(writer http.ResponseWriter, request *http.Request){
+	gameId := request.FormValue("add_gameid")
+	date := request.FormValue("date")
+	new_num := request.FormValue("new_num")
+	tol_num := request.FormValue("tol_num")
+	fmt.Println("gameid:",gameId,"date:",date,"new_num:",new_num,"tol_num:",tol_num)
+	db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+	defer db.Close()
+	checkErr(err)
+	//查询gamename
+	sql, err := db.Prepare("SELECT gamename FROM gameinfo where gameid=?")
+	rows , err:=sql.Query(gameId)
+	checkErr(err)
+	var gamename string
+	for rows.Next() {
+		err = rows.Scan(&gamename)
+		checkErr(err)
+	}
+	//插入数据
+	stmt, err := db.Prepare("INSERT userdata SET gameid=?,name=?,new_num=?,tol_num=?,date=?")
+	checkErr(err)
+
+	res, err := stmt.Exec(gameId, gamename, new_num,tol_num,date)
+	checkErr(err)
+	if err != nil {
+		fmt.Println("添加失败")
+		io.WriteString(writer,"添加数据失败")
+		return
+	}
+	fmt.Println("添加数据成功：",gamename)
+
+	id, err := res.LastInsertId()
+	checkErr(err)
+
+	fmt.Println(id)
+	http.Redirect(writer, request, "/admin/", http.StatusFound)
+	return
+}
+func AddGameHandler(writer http.ResponseWriter, request *http.Request)  {
+	select_name := request.FormValue("select_name")
+	new_gamename := request.FormValue("new_gamename")
+	fmt.Println("new_gamename:",new_gamename,"select_name:",select_name)
+	db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+	defer db.Close()
+	checkErr(err)
+	//插入数据
+	stmt, err := db.Prepare("INSERT gameinfo SET uid=?,gamename=?")
+	checkErr(err)
+
+	res, err := stmt.Exec(select_name,new_gamename)
+	checkErr(err)
+	if err != nil {
+		fmt.Println("添加失败")
+		io.WriteString(writer,"添加新游戏失败")
+		return
+	}
+	fmt.Println("添加新游戏成功：",new_gamename)
+
+	id, err := res.LastInsertId()
+	checkErr(err)
+
+	fmt.Println(id)
+	http.Redirect(writer, request, "/admin/", http.StatusFound)
+	return
+}
+func AddUserHandler(writer http.ResponseWriter, request *http.Request)  {
+	new_username := request.FormValue("new_username")
+	new_account := request.FormValue("new_account")
+	new_password := request.FormValue("new_password")
+
+	fmt.Println("new_username:",new_username,"new_account:",new_account,"new_password",new_password)
+	db, err := sql.Open("mysql", "root:123456@/userinfo?charset=utf8")
+	defer db.Close()
+	checkErr(err)
+	//插入数据
+	stmt, err := db.Prepare("INSERT userinfo SET username=?,account=?,password=?,admin=?")
+	checkErr(err)
+
+	res, err := stmt.Exec(new_username,new_account,new_password,0)
+	checkErr(err)
+	if err != nil {
+		fmt.Println("添加失败")
+		io.WriteString(writer,"添加新用户失败")
+		return
+	}
+	fmt.Println("添加新游戏成功：",new_username)
+
+	id, err := res.LastInsertId()
+	checkErr(err)
+
+	fmt.Println(id)
+	http.Redirect(writer, request, "/admin/", http.StatusFound)
+	return
+}
+
 func checkErr(err error) {
 	if err != nil {
 		log.Println(err)
 	}
 }
-
 type GameData struct {
 	Gamename string
 	Data     map[int]map[string]string
@@ -385,7 +513,6 @@ type admin struct {
 	Username string
 	Data     map[int]string
 }
-
 func init() {
 	globalSessions, _ = session.NewManager("memory", "gosessionid", 3600)
 	go globalSessions.GC()

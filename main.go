@@ -30,6 +30,9 @@ func main() {
 	http.HandleFunc("/admin/", user.AdminHandler)
 	http.HandleFunc("/userinfo/",user.UserInfoHandler)
 	http.HandleFunc("/postselect/",user.SelectHandler)
+	http.HandleFunc("/addata/",user.AddGameDataHandler)
+	http.HandleFunc("/addgame/",user.AddGameHandler)
+	http.HandleFunc("/addUser/",user.AddUserHandler)
 
 	if *addr {
 		l, err := net.Listen("tcp", "127.0.0.1:0")
